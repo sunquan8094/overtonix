@@ -46,10 +46,20 @@ void OvertonixVoice::processBlock(AudioBuffer<FloatType>& out, int start, int nu
 
 double OvertonixVoice::addSineWaves() {
   double retval = 0.0;
+  float levels[7] = {
+    *(params->getRawParameterValue(StringRef("overtoneLevel1"))),
+    *(params->getRawParameterValue(StringRef("overtoneLevel2"))),
+    *(params->getRawParameterValue(StringRef("overtoneLevel3"))),
+    *(params->getRawParameterValue(StringRef("overtoneLevel4"))),
+    *(params->getRawParameterValue(StringRef("overtoneLevel5"))),
+    *(params->getRawParameterValue(StringRef("overtoneLevel6"))),
+    *(params->getRawParameterValue(StringRef("overtoneLevel7")))
+  };
+  retval += std::sin(currentAngle) * 100.0;
   for (int o = 0; o < 7; o++) {
-    float nthLevel = *(params->getRawParameterValue(StringRef("overtoneLevel" + std::to_string(o + 1))));
-    retval += std::sin((o + 2) * currentAngle) * level * nthLevel * .01;
+    retval += std::sin((o + 2) * currentAngle) * levels[o];
   }
+  retval *= level * 0.01;
   return retval;
 }
 

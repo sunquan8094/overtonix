@@ -15,21 +15,19 @@
 OvertonixAudioProcessorEditor::OvertonixAudioProcessorEditor (OvertonixAudioProcessor& p, AudioProcessorValueTreeState& vts)
 : AudioProcessorEditor (&p), processor (p), valueTreeState(vts), keyboardComponent(p.keyboardState, MidiKeyboardComponent::horizontalKeyboard)
 {
-    keyboardComponent.setBounds(0, 0, 600, 100);
-    addAndMakeVisible(keyboardComponent);
     for (int o = 0; o < 7; o++) {
       nthOvertoneLevelAttachment[o].reset(new juce::AudioProcessorValueTreeState::SliderAttachment(valueTreeState, "overtoneLevel" + std::to_string(o + 1), nthOvertoneLevelSlider[o]));
       nthOvertoneLevelSlider[o].setTextValueSuffix("%");
       nthOvertoneLevelLabel[o].setText("Overtone " + std::to_string(o + 1) + " Level", dontSendNotification);
-      nthOvertoneLevelLabel[o].attachToComponent(&nthOvertoneLevelSlider[o], true);
+      nthOvertoneLevelLabel[o].attachToComponent(&nthOvertoneLevelSlider[o], false);
       
-      nthOvertoneLevelSlider[o].setBounds(50, 30 * o + 125, 500, 30);
+      nthOvertoneLevelSlider[o].setBounds(50, 75 * o + 50, 500, 70);
       
       addAndMakeVisible(nthOvertoneLevelSlider[o]);
       addAndMakeVisible(nthOvertoneLevelLabel[o]);
     }
   
-    setSize (600, 400);
+    setSize (600, 700);
 }
 
 OvertonixAudioProcessorEditor::~OvertonixAudioProcessorEditor()
@@ -44,7 +42,6 @@ void OvertonixAudioProcessorEditor::paint (Graphics& g)
 
     g.setColour (Colours::white);
     g.setFont (15.0f);
-    g.drawFittedText ("Hello World!", getLocalBounds(), Justification::centred, 1);
 }
 
 void OvertonixAudioProcessorEditor::resized()
