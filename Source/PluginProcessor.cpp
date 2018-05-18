@@ -28,7 +28,11 @@ OvertonixAudioProcessor::OvertonixAudioProcessor()
 {
   
   for (int o = 0; o < 7; o++) 
-    parameters.createAndAddParameter("overtoneLevel" + std::to_string(o + 1), "Overtone " + std::to_string(o + 1) + " Level", String(), NormalisableRange<float>(1.0f, 100.0f, 1.0f), floorf(powf(2, -1 * o) * 100.f), nullptr, nullptr);
+    parameters.createAndAddParameter("overtoneLevel" + std::to_string(o + 1), "Overtone " + std::to_string(o + 1) + " Level", String(), NormalisableRange<float>(0.0f, 100.0f, 1.0f), floorf(powf(2, -1 * o) * 100.f), nullptr, nullptr);
+    
+    parameters.createAndAddParameter("highEndLevel", "High End Level", String(), NormalisableRange<float>(0.0f, 100.0f, 1.0f), 100.f, nullptr, nullptr);
+    
+    parameters.createAndAddParameter("highEndSlope", "High End Slope", String(), NormalisableRange<float>(1.20f, 2.75f, 0.05f), 1.5f, nullptr, nullptr);
   
   parameters.state = ValueTree(Identifier("Overtonix"));
   

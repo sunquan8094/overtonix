@@ -15,7 +15,7 @@ public:
 private:
   template <typename FloatType>
   void processBlock(AudioBuffer<FloatType>&, int, int);
-  double currentAngle = 0.0, angleDelta = 0.0, level = 0.0;
+  double currentAngle = 0.0, angleDelta = 0.0, level = 0.0, tailOff = 0.0;
   AudioProcessorValueTreeState* params;
   double addSineWaves();
 };

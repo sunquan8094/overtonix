@@ -37,6 +37,14 @@ private:
     Label nthOvertoneLevelLabel[7];
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> nthOvertoneLevelAttachment[7];
   
+    Slider highEndLevelSlider;
+    Label highEndLevelLabel;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> highEndLevelAttachment;
+    
+    Slider highEndSlopeSlider;
+    Label highEndSlopeLabel;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> highEndSlopeAttachment;
+    
     MidiKeyboardComponent keyboardComponent;
   
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OvertonixAudioProcessorEditor)

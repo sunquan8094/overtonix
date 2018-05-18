@@ -27,7 +27,22 @@ OvertonixAudioProcessorEditor::OvertonixAudioProcessorEditor (OvertonixAudioProc
       addAndMakeVisible(nthOvertoneLevelLabel[o]);
     }
   
-    setSize (600, 700);
+    highEndLevelAttachment.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(valueTreeState, "highEndLevel", highEndLevelSlider));
+    highEndLevelSlider.setTextValueSuffix("%");
+    highEndLevelLabel.setText("High End Level", dontSendNotification);
+    highEndLevelLabel.attachToComponent(&highEndLevelSlider, false);
+    highEndLevelSlider.setBounds(50, 575, 500, 70);
+    addAndMakeVisible(highEndLevelSlider);
+    addAndMakeVisible(highEndLevelLabel);
+    
+    highEndSlopeAttachment.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(valueTreeState, "highEndSlope", highEndSlopeSlider));
+    highEndSlopeLabel.setText("High End Slope", dontSendNotification);
+    highEndSlopeLabel.attachToComponent(&highEndSlopeSlider, false);
+    highEndSlopeSlider.setBounds(50, 650, 500, 70);
+    addAndMakeVisible(highEndSlopeSlider);
+    addAndMakeVisible(highEndSlopeLabel);
+    
+    setSize (600, 735);
 }
 
 OvertonixAudioProcessorEditor::~OvertonixAudioProcessorEditor()
