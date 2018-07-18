@@ -27,9 +27,9 @@ OvertonixAudioProcessor::OvertonixAudioProcessor()
 #endif
 {
   
-  for (int o = 0; o < 7; o++) 
-    parameters.createAndAddParameter("overtoneLevel" + std::to_string(o + 1), "Overtone " + std::to_string(o + 1) + " Level", String(), NormalisableRange<float>(0.0f, 100.0f, 1.0f), floorf(powf(2, -1 * o) * 100.f), nullptr, nullptr);
-    
+    for (int o = 0; o < 7; o++)  {
+        parameters.createAndAddParameter("overtoneLevel" + std::to_string(o + 1), "Overtone " + std::to_string(o + 1) + " Level", String(), NormalisableRange<float>(0.0f, 100.0f, 1.0f), floorf(powf(2, -1 * o) * 100.f), nullptr, nullptr);
+    }    
     parameters.createAndAddParameter("highEndLevel", "High End Level", String(), NormalisableRange<float>(0.0f, 100.0f, 1.0f), 100.f, nullptr, nullptr);
     
     parameters.createAndAddParameter("highEndSlope", "High End Slope", String(), NormalisableRange<float>(1.20f, 2.75f, 0.05f), 1.5f, nullptr, nullptr);
@@ -37,7 +37,7 @@ OvertonixAudioProcessor::OvertonixAudioProcessor()
   parameters.state = ValueTree(Identifier("Overtonix"));
   
   for (int j = 0; j < 8; j++) synth.addVoice(new OvertonixVoice(parameters));
-  synth.addSound(new OvertonixSound());
+    synth.addSound(new OvertonixSound());
 }
 
 OvertonixAudioProcessor::~OvertonixAudioProcessor()
@@ -153,6 +153,13 @@ void OvertonixAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuff
 void OvertonixAudioProcessor::processBlock(AudioBuffer<double>& buffer, MidiBuffer& midiMessages)
 {
   process(buffer, midiMessages);
+}
+
+void OvertonixAudioProcessor::updateValue(int val) {
+    for (int v = 0; v < 8; v++) {
+        OvertonixVoice* voice = (OvertonixVoice*) (synth.getVoice(v));
+        voice->updateValue(val);
+    }
 }
 
 template <typename FloatType>

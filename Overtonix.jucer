@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT name="Overtonix" projectType="audioplug" buildStandalone="1"
-              jucerVersion="5.3.1" pluginFormats="buildAU,buildAUv3,buildVST,buildVST3"
+<JUCERPROJECT name="Overtonix" projectType="audioplug" jucerVersion="5.3.1"
               version="0.0.1" bundleIdentifier="com.sunquan8094.overtonix"
               pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn"
               pluginManufacturer="sunquan8094" pluginManufacturerCode="SQen"
-              pluginCode="Ubas" aaxIdentifier="com.sunquan8094.overtonix">
+              pluginCode="Ubas" aaxIdentifier="com.sunquan8094.overtonix" pluginFormats="buildAU,buildVST"
+              buildVST="1" buildVST3="0" buildAU="1" buildAUv3="0" buildRTAS="0"
+              buildAAX="0" buildStandalone="0" enableIAA="0">
   <MAINGROUP id="qXJKHB" name="Overtonix">
     <GROUP id="{ED77774F-7637-1664-59CC-545D3EE3BA5F}" name="Source">
+      <FILE id="sZoL44" name="OvertonixVoice.cpp" compile="1" resource="0"
+            file="Source/OvertonixVoice.cpp"/>
+      <FILE id="usOpo8" name="OvertonixVoice.h" compile="0" resource="0"
+            file="Source/OvertonixVoice.h"/>
+      <FILE id="hphE3W" name="OvertonixSound.cpp" compile="1" resource="0"
+            file="Source/OvertonixSound.cpp"/>
+      <FILE id="wFHCmc" name="OvertonixSound.h" compile="0" resource="0"
+            file="Source/OvertonixSound.h"/>
       <FILE id="pMg4GP" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="eEwre7" name="PluginProcessor.h" compile="0" resource="0"

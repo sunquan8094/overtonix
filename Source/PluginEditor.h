@@ -16,7 +16,7 @@
 //==============================================================================
 /**
 */
-class OvertonixAudioProcessorEditor  : public AudioProcessorEditor
+class OvertonixAudioProcessorEditor  : public AudioProcessorEditor, public Slider::Listener
 {
 public:
     OvertonixAudioProcessorEditor (OvertonixAudioProcessor&, AudioProcessorValueTreeState&);
@@ -25,6 +25,7 @@ public:
     //==============================================================================
     void paint (Graphics&) override;
     void resized() override;
+    virtual void sliderValueChanged(Slider *slider) override;
 
 private:
     // This reference is provided as a quick way for your editor to
@@ -33,17 +34,9 @@ private:
   
     AudioProcessorValueTreeState& valueTreeState;
   
-    Slider nthOvertoneLevelSlider[7];
-    Label nthOvertoneLevelLabel[7];
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> nthOvertoneLevelAttachment[7];
-  
-    Slider highEndLevelSlider;
-    Label highEndLevelLabel;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> highEndLevelAttachment;
-    
-    Slider highEndSlopeSlider;
-    Label highEndSlopeLabel;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> highEndSlopeAttachment;
+    Slider sliders[9];
+    Label labels[9];
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> attachments[9];
     
     MidiKeyboardComponent keyboardComponent;
   

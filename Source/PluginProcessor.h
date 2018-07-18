@@ -55,7 +55,7 @@ public:
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
   
-    void updateAngleDelta(int);
+    void updateValue(int);
   
     MidiKeyboardState keyboardState;
 private:

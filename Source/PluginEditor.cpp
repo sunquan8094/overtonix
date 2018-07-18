@@ -16,32 +16,29 @@ OvertonixAudioProcessorEditor::OvertonixAudioProcessorEditor (OvertonixAudioProc
 : AudioProcessorEditor (&p), processor (p), valueTreeState(vts), keyboardComponent(p.keyboardState, MidiKeyboardComponent::horizontalKeyboard)
 {
     for (int o = 0; o < 7; o++) {
-      nthOvertoneLevelAttachment[o].reset(new juce::AudioProcessorValueTreeState::SliderAttachment(valueTreeState, "overtoneLevel" + std::to_string(o + 1), nthOvertoneLevelSlider[o]));
-      nthOvertoneLevelSlider[o].setTextValueSuffix("%");
-      nthOvertoneLevelLabel[o].setText("Overtone " + std::to_string(o + 1) + " Level", dontSendNotification);
-      nthOvertoneLevelLabel[o].attachToComponent(&nthOvertoneLevelSlider[o], false);
-      
-      nthOvertoneLevelSlider[o].setBounds(50, 75 * o + 50, 500, 70);
-      
-      addAndMakeVisible(nthOvertoneLevelSlider[o]);
-      addAndMakeVisible(nthOvertoneLevelLabel[o]);
+        attachments[o].reset(new juce::AudioProcessorValueTreeState::SliderAttachment(valueTreeState, "overtoneLevel" + std::to_string(o + 1), sliders[o]));
+        labels[o].setText("Overtone " + std::to_string(o + 1) + " Level", dontSendNotification);
+        sliders[o].setTextValueSuffix("%");
     }
-  
-    highEndLevelAttachment.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(valueTreeState, "highEndLevel", highEndLevelSlider));
-    highEndLevelSlider.setTextValueSuffix("%");
-    highEndLevelLabel.setText("High End Level", dontSendNotification);
-    highEndLevelLabel.attachToComponent(&highEndLevelSlider, false);
-    highEndLevelSlider.setBounds(50, 575, 500, 70);
-    addAndMakeVisible(highEndLevelSlider);
-    addAndMakeVisible(highEndLevelLabel);
-    
-    highEndSlopeAttachment.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(valueTreeState, "highEndSlope", highEndSlopeSlider));
-    highEndSlopeLabel.setText("High End Slope", dontSendNotification);
-    highEndSlopeLabel.attachToComponent(&highEndSlopeSlider, false);
-    highEndSlopeSlider.setBounds(50, 650, 500, 70);
-    addAndMakeVisible(highEndSlopeSlider);
-    addAndMakeVisible(highEndSlopeLabel);
-    
+        
+            
+    attachments[7].reset(new juce::AudioProcessorValueTreeState::SliderAttachment(valueTreeState, "highEndLevel", sliders[7]));
+    labels[7].setText("High End Level", dontSendNotification);
+    sliders[7].setTextValueSuffix("%");
+      
+    attachments[8].reset(new juce::AudioProcessorValueTreeState::SliderAttachment(valueTreeState, "highEndSlope", sliders[8]));
+            labels[8].setText("High End Slope", dontSendNotification);
+      
+      for (int o = 0; o < 9; o++) {
+        labels[o].attachToComponent(&(sliders[o]), false);
+      
+        sliders[o].setBounds(50, 75 * o + 50, 500, 70);
+        sliders[o].addListener(this);
+        
+        addAndMakeVisible(sliders[o]);
+        addAndMakeVisible(labels[o]);
+      }
+      
     setSize (600, 735);
 }
 
@@ -63,4 +60,43 @@ void OvertonixAudioProcessorEditor::resized()
 {
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
+}
+
+void OvertonixAudioProcessorEditor::sliderValueChanged(Slider *slider) {
+    
+    if (slider == &(sliders[0])) {
+        processor.updateValue(0);
+    }
+  
+    if (slider == &(sliders[1])) {
+      processor.updateValue(1);
+    }
+  
+  if (slider == &(sliders[2])) {
+    processor.updateValue(2);
+  }
+  
+  if (slider == &(sliders[3])) {
+    processor.updateValue(3);
+  }
+  
+  if (slider == &(sliders[4])) {
+    processor.updateValue(4);
+  }
+  
+  if (slider == &(sliders[5])) {
+    processor.updateValue(5);
+  }
+  
+  if (slider == &(sliders[6])) {
+    processor.updateValue(6);
+  }
+  
+  if (slider == &(sliders[7])) {
+    processor.updateValue(7);
+  }
+  
+  if (slider == &(sliders[8])) {
+    processor.updateValue(8);
+  }
 }
