@@ -9,18 +9,11 @@ bool OvertonixVoice::canPlaySound(SynthesiserSound* sound) {
   return dynamic_cast<OvertonixSound*> (sound) != nullptr;
 }
 
-void OvertonixVoice::loadValues() {
-    for (int v = 0; v < 9; v++) {
-        newValues[v] = *(params->getRawParameterValue(strs[v]));
-    }
-}
-
 void OvertonixVoice::startNote(int note, float velocity, SynthesiserSound* sound, int currentPitchWheelPosition) {
-    level = velocity * 0.01;
+    level = velocity * 0.001;
     double cycHz = MidiMessage::getMidiNoteInHertz(note);
     currentSampleIndex = 0.0;
-    currentSampleDelta = cycHz * 512.0 / getSampleRate();
-    loadValues();
+    currentSampleDelta = cycHz * 128.0 / getSampleRate();
     generateWavetable();
     tailOff = 0.0;
 }
@@ -52,7 +45,7 @@ void OvertonixVoice::processBlock(AudioBuffer<FloatType>& out, int start, int nu
       for (int i = out.getNumChannels(); --i >= 0;) out.addSample(i, start, current);
           
       currentSampleIndex += currentSampleDelta;
-      if (currentSampleIndex > 512) currentSampleIndex -= 512;
+      if (currentSampleIndex > 128) currentSampleIndex -= 128;
       ++start;
         
         if (tailOff > 0.0) {
@@ -66,13 +59,14 @@ void OvertonixVoice::processBlock(AudioBuffer<FloatType>& out, int start, int nu
 }
 
 void OvertonixVoice::generateWavetable() {
-    double retval = 0.0, angle = 0.0, delta = 2.0 * double_Pi / 512.0;
-    float highEndSlope = newValues[7], highEndLevel = newValues[8];
-    for (int p = 0; p < 512; p++) {
+    double retval = 0.0, angle = 0.0, delta = 2.0 * double_Pi / 128.0;
+    float highEndSlope = *(params->getRawParameterValue(strs[7])), highEndLevel = *(params->getRawParameterValue(strs[8]));
+    for (int p = 0; p < 128; p++) {
         retval = std::sin(angle) * 100.0;
         
         for (int o = 0; o < 7; o++) {
-            retval += std::sin((o + 2) * angle) * newValues[o];
+          double level = *(params->getRawParameterValue(strs[o]));
+          retval += std::sin((o + 2) * angle) * level;
         }
         
         for (int k = 9; k < 15; k++) {
@@ -81,11 +75,6 @@ void OvertonixVoice::generateWavetable() {
         wavetable[p] = retval;
         angle += delta;
     }
-}
-
-void OvertonixVoice::updateValue(int v) {
-    newValues[v] = *(params->getRawParameterValue(strs[v]));
-    generateWavetable();
 }
 
 void OvertonixVoice::pitchWheelMoved (int newPitchWheelValue) {

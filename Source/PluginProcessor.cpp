@@ -155,10 +155,10 @@ void OvertonixAudioProcessor::processBlock(AudioBuffer<double>& buffer, MidiBuff
   process(buffer, midiMessages);
 }
 
-void OvertonixAudioProcessor::updateValue(int val) {
+void OvertonixAudioProcessor::updateValue() {
     for (int v = 0; v < 8; v++) {
         OvertonixVoice* voice = (OvertonixVoice*) (synth.getVoice(v));
-        voice->updateValue(val);
+        voice->generateWavetable();
     }
 }
 

@@ -12,7 +12,7 @@ public:
   void renderNextBlock(AudioBuffer<double>&, int, int) override;
   void pitchWheelMoved(int) override;
   void controllerMoved(int, int) override;
-  void updateValue(int);
+  void generateWavetable();
 private:
   template <typename FloatType>
   void processBlock(AudioBuffer<FloatType>&, int, int);
@@ -28,9 +28,7 @@ private:
         StringRef("highEndSlope"),
         StringRef("highEndLevel")
     };
-  double wavetable[512];
+  double wavetable[128];
   double newValues[9];
   AudioProcessorValueTreeState* params;
-  void generateWavetable();
-  void loadValues();
 };

@@ -63,40 +63,5 @@ void OvertonixAudioProcessorEditor::resized()
 }
 
 void OvertonixAudioProcessorEditor::sliderValueChanged(Slider *slider) {
-    
-    if (slider == &(sliders[0])) {
-        processor.updateValue(0);
-    }
-  
-    if (slider == &(sliders[1])) {
-      processor.updateValue(1);
-    }
-  
-  if (slider == &(sliders[2])) {
-    processor.updateValue(2);
-  }
-  
-  if (slider == &(sliders[3])) {
-    processor.updateValue(3);
-  }
-  
-  if (slider == &(sliders[4])) {
-    processor.updateValue(4);
-  }
-  
-  if (slider == &(sliders[5])) {
-    processor.updateValue(5);
-  }
-  
-  if (slider == &(sliders[6])) {
-    processor.updateValue(6);
-  }
-  
-  if (slider == &(sliders[7])) {
-    processor.updateValue(7);
-  }
-  
-  if (slider == &(sliders[8])) {
-    processor.updateValue(8);
-  }
+  processor.updateValue();
 }
