@@ -69,8 +69,8 @@ void OvertonixVoice::generateWavetable() {
           retval += std::sin((o + 2) * angle) * level;
         }
         
-        for (int k = 9; k < 15; k++) {
-            retval += std::sin(k * angle) * (highEndLevel) * pow(highEndSlope , 8 - k);
+        for (int k = 9; k < 20; k++) {
+            retval += std::sin(k * angle) * (highEndLevel) * pow(5 - highEndSlope, 8 - k);
         }
         wavetable[p] = retval;
         angle += delta;

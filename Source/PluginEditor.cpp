@@ -27,19 +27,29 @@ OvertonixAudioProcessorEditor::OvertonixAudioProcessorEditor (OvertonixAudioProc
     sliders[7].setTextValueSuffix("%");
       
     attachments[8].reset(new juce::AudioProcessorValueTreeState::SliderAttachment(valueTreeState, "highEndSlope", sliders[8]));
-            labels[8].setText("High End Slope", dontSendNotification);
+      labels[8].setText("High End Slope", dontSendNotification);
       
-      for (int o = 0; o < 9; o++) {
+      for (int o = 0; o < 8; o++) {
         labels[o].attachToComponent(&(sliders[o]), false);
-      
-        sliders[o].setBounds(50, 75 * o + 50, 500, 70);
+        sliders[o].setSliderStyle(Slider::SliderStyle::Rotary);
+        sliders[o].setTextBoxStyle(Slider::TextEntryBoxPosition::TextBoxBelow, false, 75, 30);
+        sliders[o].setBounds((o % 4 + 1) * 100 - 75, ((int)(o / 4) + 1) * 120 - 75, 100, 100);
         sliders[o].addListener(this);
         
         addAndMakeVisible(sliders[o]);
         addAndMakeVisible(labels[o]);
       }
-      
-    setSize (600, 735);
+  
+      labels[8].attachToComponent(&(sliders[8]), false);
+      sliders[8].setSliderStyle(Slider::SliderStyle::LinearHorizontal);
+      sliders[8].setTextBoxStyle(Slider::TextEntryBoxPosition::TextBoxBelow, false, 100, 30);
+      sliders[8].setBounds(25, 285, 400, 100);
+      sliders[8].addListener(this);
+    
+      addAndMakeVisible(sliders[8]);
+      addAndMakeVisible(labels[8]);
+  
+    setSize (450, 400);
 }
 
 OvertonixAudioProcessorEditor::~OvertonixAudioProcessorEditor()
