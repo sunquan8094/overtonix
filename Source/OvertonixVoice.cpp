@@ -1,8 +1,19 @@
 #include "OvertonixVoice.h"
 #include "OvertonixSound.h"
 
-OvertonixVoice::OvertonixVoice(AudioProcessorValueTreeState& args) : params(&args) {
+#define NUM_SAMPLES 1024
 
+OvertonixVoice::OvertonixVoice(AudioProcessorValueTreeState& args) : params(&args) {
+  generateSinTable(NUM_SAMPLES);
+  
+}
+
+void OvertonixVoice::generateSinTable(int samples) {
+  for (int x = 0; x < 20; x++) {
+    for (int y = 0; y < samples; y++) {
+      sinTable[x][y] = std::sin((double)(x) * ((double)y * (2.0 * double_Pi / (double)samples)));
+    }
+  }
 }
 
 bool OvertonixVoice::canPlaySound(SynthesiserSound* sound) {
@@ -13,7 +24,7 @@ void OvertonixVoice::startNote(int note, float velocity, SynthesiserSound* sound
     level = velocity * 0.001;
     double cycHz = MidiMessage::getMidiNoteInHertz(note);
     currentSampleIndex = 0.0;
-    currentSampleDelta = cycHz * 128.0 / getSampleRate();
+    currentSampleDelta = cycHz * NUM_SAMPLES / getSampleRate();
     generateWavetable();
     tailOff = 0.0;
 }
@@ -45,7 +56,7 @@ void OvertonixVoice::processBlock(AudioBuffer<FloatType>& out, int start, int nu
       for (int i = out.getNumChannels(); --i >= 0;) out.addSample(i, start, current);
           
       currentSampleIndex += currentSampleDelta;
-      if (currentSampleIndex > 128) currentSampleIndex -= 128;
+      if (currentSampleIndex > NUM_SAMPLES) currentSampleIndex -= NUM_SAMPLES;
       ++start;
         
         if (tailOff > 0.0) {
@@ -59,21 +70,20 @@ void OvertonixVoice::processBlock(AudioBuffer<FloatType>& out, int start, int nu
 }
 
 void OvertonixVoice::generateWavetable() {
-    double retval = 0.0, angle = 0.0, delta = 2.0 * double_Pi / 128.0;
+    double retval = 0.0;
     float highEndSlope = *(params->getRawParameterValue(strs[7])), highEndLevel = *(params->getRawParameterValue(strs[8]));
-    for (int p = 0; p < 128; p++) {
-        retval = std::sin(angle) * 100.0;
+    for (int p = 0; p < NUM_SAMPLES; p++) {
+        retval = sinTable[1][p] * 100.0;
         
-        for (int o = 0; o < 7; o++) {
-          double level = *(params->getRawParameterValue(strs[o]));
-          retval += std::sin((o + 2) * angle) * level;
+        for (int o = 2; o < 9; o++) {
+          double level = *(params->getRawParameterValue(strs[o - 2]));
+          retval += sinTable[o][p] * level;
         }
         
         for (int k = 9; k < 20; k++) {
-            retval += std::sin(k * angle) * (highEndLevel) * pow(5 - highEndSlope, 8 - k);
+            retval += sinTable[k][p] * (highEndLevel) * pow((float)5 - highEndSlope, (float)8 - k);
         }
         wavetable[p] = retval;
-        angle += delta;
     }
 }
 

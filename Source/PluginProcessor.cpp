@@ -32,7 +32,7 @@ OvertonixAudioProcessor::OvertonixAudioProcessor()
     }    
     parameters.createAndAddParameter("highEndLevel", "High End Level", String(), NormalisableRange<float>(0.0f, 100.0f, 1.0f), 100.f, nullptr, nullptr);
     
-    parameters.createAndAddParameter("highEndSlope", "High End Slope", String(), NormalisableRange<float>(1.00f, 4.80f, 0.05f), 1.5f, nullptr, nullptr);
+    parameters.createAndAddParameter("highEndSlope", "High End Slope", String(), NormalisableRange<float>(1.00f, 4.00f, 0.05f), 1.5f, nullptr, nullptr);
   
   parameters.state = ValueTree(Identifier("Overtonix"));
   

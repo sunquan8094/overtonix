@@ -50,6 +50,7 @@ OvertonixAudioProcessorEditor::OvertonixAudioProcessorEditor (OvertonixAudioProc
       addAndMakeVisible(labels[8]);
   
     setSize (450, 400);
+  setRepaintsOnMouseActivity(true);
 }
 
 OvertonixAudioProcessorEditor::~OvertonixAudioProcessorEditor()
@@ -73,5 +74,6 @@ void OvertonixAudioProcessorEditor::resized()
 }
 
 void OvertonixAudioProcessorEditor::sliderValueChanged(Slider *slider) {
+  slider->repaint();
   processor.updateValue();
 }

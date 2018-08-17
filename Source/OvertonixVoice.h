@@ -2,6 +2,8 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
+#define NUM_SAMPLES 1024
+
 class OvertonixVoice : public SynthesiserVoice {
 public:
   OvertonixVoice(AudioProcessorValueTreeState&);
@@ -13,6 +15,7 @@ public:
   void pitchWheelMoved(int) override;
   void controllerMoved(int, int) override;
   void generateWavetable();
+  void generateSinTable(int);
 private:
   template <typename FloatType>
   void processBlock(AudioBuffer<FloatType>&, int, int);
@@ -28,7 +31,8 @@ private:
         StringRef("highEndSlope"),
         StringRef("highEndLevel")
     };
-  double wavetable[128];
+  double sinTable[20][NUM_SAMPLES];
+  double wavetable[NUM_SAMPLES];
   double newValues[9];
   AudioProcessorValueTreeState* params;
 };
