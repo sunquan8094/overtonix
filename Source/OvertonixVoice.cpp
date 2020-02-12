@@ -52,6 +52,14 @@ template <typename FloatType>
 void OvertonixVoice::processBlock(AudioBuffer<FloatType>& out, int start, int num) {
     while (--num >= 0) {
       auto current = static_cast<FloatType> (wavetable[(int)ceil(currentSampleIndex)] * level * ((tailOff > 0.0) ? tailOff : 1.0));
+      
+      // Code below is to reduce that AWFUL clicking noise on certain notes...
+      
+      if (current >= 1.0 || current <= -1.0) { 
+        auto last = static_cast<FloatType> (wavetable[(int)(ceil(currentSampleIndex) - 1)] * level * ((tailOff > 0.0) ? tailOff : 1.0));
+        auto next = static_cast<FloatType> (wavetable[(int)(ceil(currentSampleIndex) + 1)] * level * ((tailOff > 0.0) ? tailOff : 1.0));
+        current = (last + next) / 2;
+      }
           
       for (int i = out.getNumChannels(); --i >= 0;) out.addSample(i, start, current);
           
