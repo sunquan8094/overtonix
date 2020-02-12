@@ -23,22 +23,21 @@ OvertonixAudioProcessor::OvertonixAudioProcessor()
                       #endif
                        .withOutput ("Output", AudioChannelSet::stereo(), true)
                      #endif
-                       ), parameters(*this, nullptr)
+                       ), parameters(*this, nullptr, Identifier("Overtonix"), {
+       std::make_unique<AudioParameterFloat>("overtoneLevel1", "Overtone 1 Level", NormalisableRange<float>(0.0f, 100.0f, 1.0f), 100.f), 
+       std::make_unique<AudioParameterFloat>("overtoneLevel2", "Overtone 2 Level", NormalisableRange<float>(0.0f, 100.0f, 1.0f), 50.f), 
+       std::make_unique<AudioParameterFloat>("overtoneLevel3", "Overtone 3 Level", NormalisableRange<float>(0.0f, 100.0f, 1.0f), 25.f), 
+       std::make_unique<AudioParameterFloat>("overtoneLevel4", "Overtone 4 Level", NormalisableRange<float>(0.0f, 100.0f, 1.0f), 13.f), 
+       std::make_unique<AudioParameterFloat>("overtoneLevel5", "Overtone 5 Level", NormalisableRange<float>(0.0f, 100.0f, 1.0f), 6.f),
+       std::make_unique<AudioParameterFloat>("overtoneLevel6", "Overtone 6 Level", NormalisableRange<float>(0.0f, 100.0f, 1.0f), 3.f),
+       std::make_unique<AudioParameterFloat>("overtoneLevel7", "Overtone 7 Level", NormalisableRange<float>(0.0f, 100.0f, 1.0f), 1.f),
+       std::make_unique<AudioParameterFloat>("highEndLevel", "High End Level", NormalisableRange<float>(0.0f, 100.0f, 1.0f), 100.f),
+       std::make_unique<AudioParameterFloat>("highEndSlope", "High End Slope", NormalisableRange<float>(1.f, 4.f, 0.05f), 1.5f),
+     }) {
+      for (int j = 0; j < 8; j++) synth.addVoice(new OvertonixVoice(parameters));
+      synth.addSound(new OvertonixSound());
+     }
 #endif
-{
-  
-    for (int o = 0; o < 7; o++)  {
-        parameters.createAndAddParameter("overtoneLevel" + std::to_string(o + 1), "Overtone " + std::to_string(o + 1) + " Level", String(), NormalisableRange<float>(0.0f, 100.0f, 1.0f), floorf(powf(2, -1 * o) * 100.f), nullptr, nullptr);
-    }    
-    parameters.createAndAddParameter("highEndLevel", "High End Level", String(), NormalisableRange<float>(0.0f, 100.0f, 1.0f), 100.f, nullptr, nullptr);
-    
-    parameters.createAndAddParameter("highEndSlope", "High End Slope", String(), NormalisableRange<float>(1.00f, 4.00f, 0.05f), 1.5f, nullptr, nullptr);
-  
-  parameters.state = ValueTree(Identifier("Overtonix"));
-  
-  for (int j = 0; j < 8; j++) synth.addVoice(new OvertonixVoice(parameters));
-    synth.addSound(new OvertonixSound());
-}
 
 OvertonixAudioProcessor::~OvertonixAudioProcessor()
 {
